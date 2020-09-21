@@ -27,6 +27,6 @@ Code must have complete docstrings, explaining the behavior of functions and the
 
 https://www.bu.edu/cs/account/
 
-Remember the final exam in CS 562? MapReduce for matrix multiplication.
+
 
 

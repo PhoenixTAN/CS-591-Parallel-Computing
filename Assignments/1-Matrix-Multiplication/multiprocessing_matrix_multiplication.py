@@ -49,6 +49,8 @@ def parallel_matrix_multiplication(A: List[int], B: List[int], lock, matrix_size
 
     # initialize process pool
     processes = [None] * num_of_processors
+
+    # matrix A, B and C can be shared by different workers
     shared_A = Array('i', N)
     shared_B = Array('i', N)
     shared_C = Array('i', N)
@@ -57,7 +59,7 @@ def parallel_matrix_multiplication(A: List[int], B: List[int], lock, matrix_size
         shared_A[i] = A[i]
         shared_B[i] = B[i]
 
-    # partition the matrix A and B, and dispatch the jobs to workers
+    # partition the matrix A, and dispatch the jobs to workers
     interval = N // num_of_processors
     index = 0
     process_id = 0
@@ -86,6 +88,9 @@ def worker(process_id: int, A: List[int], B: List[int], C: List[int],
         param process_id: an integer for test purpose
         param start: start index in matrix A
         param end: end index in matrix A
+        param lock: used for synchronization
+        param matrix_size: size of matrix
+        param num_of_processors: the number of processors
     '''
 
     N = matrix_size * matrix_size
@@ -127,9 +132,10 @@ def worker(process_id: int, A: List[int], B: List[int], C: List[int],
 
 if __name__ == '__main__':
 
-    lock = Lock()
+    lock = Lock()   # lock for shared resource
     random.seed(1)
 
+    # try different size of matrix
     for d in range(0, 8):
         matrix_size = 2 ** d
         print("matrix size: ", matrix_size)
@@ -153,6 +159,7 @@ if __name__ == '__main__':
 
         run_time = []
 
+        # different number of processors
         for k in range(0, 4):
             num_of_processors = 2 ** k
             print('number of processors: ', num_of_processors)

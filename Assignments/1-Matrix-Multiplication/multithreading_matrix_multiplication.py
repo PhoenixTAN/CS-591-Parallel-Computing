@@ -125,7 +125,7 @@ if __name__ == '__main__':
     lock = threading.Lock()
     random.seed(1)
 
-    for d in range(0, 10):
+    for d in range(0, 9):
         matrix_size = 2 ** d
         print("matrix size: ", matrix_size)
         A = []
@@ -140,7 +140,7 @@ if __name__ == '__main__':
         start = time.time()
         C = brute_force_matrix_multiplication(A, B)
         end = time.time()
-        print('brute force running time: ', end - start)
+        print('brute force running time: ', format(end - start, '.3e'))
 
         # flatten matrix A and B
         flat_A = [val for row in A for val in row]
@@ -157,7 +157,7 @@ if __name__ == '__main__':
             result = parallel_matrix_multiplication(flat_A, flat_B, lock, matrix_size, num_of_processors)
             end = time.time()
             print('multithreading running time: ', end - start)
-            run_time.append((min(num_of_processors, matrix_size * matrix_size), end - start))
+            run_time.append((min(num_of_processors, matrix_size * matrix_size), float(format(end - start, '.3e'))))
 
             print('validating the result...')
             flat_C = [val for row in C for val in row]
@@ -174,8 +174,8 @@ if __name__ == '__main__':
             num_of_processors = run_time[i][0]
             amount_of_time = run_time[i][1]
             try:
-                speed_up.append(run_time[0][1] / amount_of_time)
-                efficiency.append(run_time[0][1] / amount_of_time / num_of_processors)
+                speed_up.append(format(run_time[0][1] / amount_of_time, '.3e'))
+                efficiency.append(format(run_time[0][1] / amount_of_time / num_of_processors, '.3e'))
             except ZeroDivisionError:
                 speed_up.append(float('Inf'))
                 efficiency.append(float('Inf'))

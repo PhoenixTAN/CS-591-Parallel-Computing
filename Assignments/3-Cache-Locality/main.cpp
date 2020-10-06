@@ -1,7 +1,7 @@
 /*
  * @Author: Ziqi Tan, Xueyan Xia
  * @Date: 2020-10-04 13:32:19
- * @LastEditTime: 2020-10-05 02:28:59
+ * @LastEditTime: 2020-10-05 13:02:43
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \CS-591-Parallel-Computing\Assignments\3-Cache-Locality\CacheLocality\cacheLocality.cpp
@@ -11,7 +11,8 @@
 #include <iostream>
 #include <chrono>   /* time manipulation */
 
-using namespace std;
+using std::cout;
+using std::endl;
 
 /* functions */
 long int* transpose(long int* M, int rows, int cols);
@@ -75,9 +76,7 @@ long int* matrix_multiplication(long int* A, long int* B, int rows, int cols, in
     for ( int i = 0; i < rows; i++ ) {
         for ( int j = 0; j < cols; j++ ) {
             for ( int k = 0; k < M; k++ ) {
-                // cout << "A[i][k] " << A[rows * i + k] << " * " << "B[k][j] " << B[rows * k + j] << endl;
                 C[rows * i + j] += A[rows * i + k] * B[rows * k + j];
-                // cout << "C[rows * i + j] = " << C[rows * i + j] << endl;
             }
         }
     }
@@ -147,13 +146,19 @@ int main() {
     // declare
     long int* A = new long int[rows * cols];
     long int* B = new long int[rows * cols];
-    long int* BT = NULL;     // B transpose 
-    long int* C = NULL;     // result from multiplying A * B in the ordinary fashion
-    long int* C_plus = NULL;    // result from multiplying A * Bt (B-transpose), after transposing matrix
     
-    chrono::steady_clock::time_point start_time;
-    chrono::steady_clock::time_point end_time;
-    chrono::duration<double> duration;
+    // B transpose
+    long int* BT = NULL;
+
+    // result from multiplying A * B in the ordinary fashion      
+    long int* C = NULL;
+
+    // result from multiplying A * Bt (B-transpose), after transposing matrix     
+    long int* C_plus = NULL;    
+    
+    std::chrono::steady_clock::time_point start_time;
+    std::chrono::steady_clock::time_point end_time;
+    std::chrono::duration<double> duration;
 
     // initialize matrix A and matrix B
     for ( int i = 0; i < rows * cols; i++ ) {
@@ -164,24 +169,17 @@ int main() {
     // get the transpose of matrix B
     BT = transpose(B, rows, cols);
 
-    // uncomment this block when you need to test the output
-    /*
-    print_matrix(A, rows, cols);
-    print_matrix(B, rows, cols);
-    print_matrix(BT, rows, cols);
-    */
-
     // multiply A * B in the ordinary fashion
-    start_time = chrono::steady_clock::now();
+    start_time = std::chrono::steady_clock::now();
     C = matrix_multiplication(A, B, rows, cols, cols);
-    end_time = chrono::steady_clock::now();
+    end_time = std::chrono::steady_clock::now();
     duration = end_time - start_time;
-    cout << "ordinary fashion takes " << duration.count() << " seconds." <<endl;
+    cout << "ordinary fashion takes " << duration.count() << " seconds." << endl;
 
     // multiply A * Bt (B-transpose), after transposing matrix
-    start_time = chrono::steady_clock::now();
+    start_time = std::chrono::steady_clock::now();
     C_plus = matrix_multiplication_plus(A, BT, rows, cols, cols);
-    end_time = chrono::steady_clock::now();
+    end_time = std::chrono::steady_clock::now();
     duration = end_time - start_time;
     cout << "new method takes " << duration.count() << " seconds."  << endl;
 

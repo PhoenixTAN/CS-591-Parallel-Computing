@@ -1,3 +1,8 @@
+/*
+ * @Author: Ziqi Tan, Xueyan Xia
+ * @Description: Parallel execution, but using the transpose of the second matrix.
+ */
+
 #include <thread>
 #include <mutex>
 #include <vector>

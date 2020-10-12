@@ -1,3 +1,8 @@
+/*
+ * @Author: Ziqi Tan, Xueyan Xia
+ * @Description: Sequential execution of the standard algorithm (without threads).
+ */
+
 /**
  * @description: multiply A * B in the ordinary fashion
  * @param {long int*} A: matrix A 

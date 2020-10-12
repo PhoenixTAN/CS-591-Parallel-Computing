@@ -2,15 +2,16 @@
  * @Author: Ziqi Tan, Xueyan Xia
  * @Description: Assignment 4: C++ Thread
  */
+
 #include <iostream>
 #include <chrono>       /* time manipulation */
 #include <string>     
 
 #include "utils.cpp"                        /* functions to transpose matrix, print matrix and validate results */
-#include "sequential.cpp"                   /* old fashion method */
-#include "sequential_cache_locality.cpp"
-#include "multithreading.cpp"
-#include "multithreading_cache_locality.cpp"
+#include "sequential.cpp"                   /* Sequential execution of the standard algorithm (without threads). */
+#include "sequential_cache_locality.cpp"    /* Sequential execution of an implementation using the transpose of the second matrix to improve cache locality. */
+#include "multithreading.cpp"               /* Parallel execution with normal matrices, using 8 threads and 8 tiles. */
+#include "multithreading_cache_locality.cpp"/* Parallel execution (as above), but using the transpose of the second matrix.*/
 
 
 #define MATRIX_SIZE 1024

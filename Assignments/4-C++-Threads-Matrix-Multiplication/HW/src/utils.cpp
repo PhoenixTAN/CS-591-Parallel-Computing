@@ -1,3 +1,8 @@
+/*
+ * @Author: Ziqi Tan, Xueyan Xia
+ * @Description: functions to transpose matrix, print matrix and validate results
+ */
+
 #include<iostream>
 
 long int* transpose(long int* M, int matrix_size);

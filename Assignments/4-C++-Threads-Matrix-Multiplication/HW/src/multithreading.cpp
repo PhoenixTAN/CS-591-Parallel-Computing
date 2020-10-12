@@ -1,3 +1,8 @@
+/*
+ * @Author: Ziqi Tan, Xueyan Xia
+ * @Description: Parallel execution with normal matrices, using 8 threads and 8 tiles.
+ */
+
 #include <thread>
 #include <mutex>
 #include <vector>

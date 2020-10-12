@@ -1,11 +1,21 @@
+/*
+ * @Author: Ziqi Tan, Xueyan Xia
+ * @Description: Assignment 4: C++ Thread
+ */
 #include <iostream>
-#include <chrono>                       /* time manipulation */
-#include "utils.cpp"
-#include "sequential.cpp"
-#include "sequential_cache_locality.cpp"
+#include <chrono>       /* time manipulation */
+#include <string>     
 
-#define ROWS 1024
-#define COLUMNS 1024
+#include "utils.cpp"                        /* functions to transpose matrix, print matrix and validate results */
+#include "sequential.cpp"                   /* old fashion method */
+#include "sequential_cache_locality.cpp"
+#include "multithreading.cpp"
+#include "multithreading_cache_locality.cpp"
+
+
+#define MATRIX_SIZE 1024
+#define N MATRIX_SIZE * MATRIX_SIZE
+#define NUM_OF_THREADS 8
 
 static long int* A;         /* matrix A */
 static long int* B;         /* matrix B */
@@ -14,18 +24,16 @@ static long int* C;         /* result from multiplying A * B in the ordinary fas
 static long int* C_plus;    /* result from other methods */
 
 
-
 int main ( int argc, char *argv[] ) {
 
-    std::cout << argc << std::endl;
-
-    for ( int i = 0; i < argc; i++ ) {
-        std::cout << argv[i] << std::endl;
+    if ( argc != 2 ) {
+        std::cout << "Please input \"sequential_plus\", \"parallel\", \"parallel_plus\"." << std::endl;
+        return 0;
     }
 
     // initialization
-    A = new long int[ROWS * COLUMNS];
-    B = new long int[ROWS * COLUMNS];
+    A = new long int[N];
+    B = new long int[N];
     BT = NULL;   
     C = NULL;
     C_plus = NULL;    
@@ -35,29 +43,44 @@ int main ( int argc, char *argv[] ) {
     std::chrono::duration<double> duration;
 
     // initialize matrix A and matrix B
-    for ( int i = 0; i < ROWS * COLUMNS; i++ ) {
+    for ( int i = 0; i < N; i++ ) {
         A[i] = i + 1;
-        B[i] = ROWS * COLUMNS - i;
+        B[i] = N - i;
     }
 
     // get the transpose of matrix B
-    BT = transpose(B, ROWS, COLUMNS);
+    BT = transpose(B, MATRIX_SIZE);
 
     // multiply A * B in the ordinary fashion
     start_time = std::chrono::steady_clock::now();
-    C = sequential_matrix_multiplication(A, B, ROWS, COLUMNS, COLUMNS);
+    C = sequential_matrix_multiplication(A, B, MATRIX_SIZE);
     end_time = std::chrono::steady_clock::now();
     duration = end_time - start_time;
     std::cout << "ordinary fashion takes " << duration.count() << " seconds." << std::endl;
 
     // multiply A * Bt (B-transpose), after transposing matrix
     start_time = std::chrono::steady_clock::now();
-    C_plus = sequential_matrix_multiplication_plus(A, BT, ROWS, COLUMNS, COLUMNS);
+    
+    const std::string method = std::string(argv[1]);
+    if ( method == "sequential_plus" ) {
+        C_plus = sequential_matrix_multiplication_plus(A, BT, MATRIX_SIZE);
+    }
+    else if ( method == "parallel" ) {
+        C_plus = parallel_matrix_multiplication(A, B, MATRIX_SIZE, NUM_OF_THREADS);
+    }
+    else if ( method == "parallel_plus" ) {
+        C_plus = parallel_matrix_multiplication_plus(A, BT, MATRIX_SIZE, NUM_OF_THREADS);
+    }
+    else {
+        std::cout << "Please input \"sequential_plus\", \"parallel\", \"parallel_plus\"."<< std::endl; 
+    }
+
     end_time = std::chrono::steady_clock::now();
     duration = end_time - start_time;
+
     std::cout << "new method takes " << duration.count() << " seconds."  << std::endl;
 
-    validate_result(C, C_plus, ROWS, COLUMNS, 1);
+    validate_result(C, C_plus, MATRIX_SIZE, 1);
 
     // remember to free memory
     delete[] A;

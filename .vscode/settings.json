@@ -40,6 +40,12 @@
         "xstring": "cpp",
         "xtr1common": "cpp",
         "xutility": "cpp",
-        "mutex": "cpp"
+        "mutex": "cpp",
+        "algorithm": "cpp",
+        "array": "cpp",
+        "atomic": "cpp",
+        "condition_variable": "cpp",
+        "iterator": "cpp",
+        "thread": "cpp"
     }
 }

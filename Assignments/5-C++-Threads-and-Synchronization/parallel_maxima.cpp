@@ -57,9 +57,14 @@ int get_maxima_parallel(int* array, int size_of_array, int num_of_threads, bool 
         }
 
         // update the global maxima
-        if ( local_maxima > atomic_maxima ) {
+        /*if ( local_maxima > atomic_maxima ) {
             atomic_maxima = local_maxima;
-        }
+        }*/
+        int expected_atomic_value = atomic_maxima.load();
+        while ( local_maxima > expected_atomic_value && !atomic_maxima.compare_exchange_weak(expected_atomic_value, local_maxima) );
+        // expected	- reference to the value expected to be found in the atomic object. Gets stored with the actual value of *this if the comparison fails.
+        // desired - the value to store in the atomic object if it is as expected
+        // return - true if the underlying atomic value was successfully changed, false otherwise.
     };
 
     // partition

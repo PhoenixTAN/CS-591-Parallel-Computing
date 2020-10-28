@@ -46,6 +46,7 @@
         "atomic": "cpp",
         "condition_variable": "cpp",
         "iterator": "cpp",
-        "thread": "cpp"
+        "thread": "cpp",
+        "xxatomic": "cpp"
     }
 }

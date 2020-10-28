@@ -15,7 +15,7 @@
 
 int main () {
 
-    const int num_of_threads = 8;
+    const int num_of_threads = 64;
     const int size_of_array = 1 << 10;
 
     if ( num_of_threads > size_of_array ) {

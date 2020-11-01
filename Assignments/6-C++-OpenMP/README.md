@@ -19,7 +19,17 @@ In your README, state in each case whether OpenMP is applicable.  If it is not a
 Try to use good, modern, C++ coding style, and to avoid C-style constructs such as raw pointers and C-style arrays.  Also remember not to follow Schmidt's example regarding the main function—keep your main short and simple, and delegate responsibility to other functions.
 
 ## How do we run this program?
+For each .cpp file, run this to compile:
+```
+$ g++ -std=c++14 -fopenmp source_filename.cpp -o your_target_file_name.exe
+```
+And then run it.
 
+For example, 
+```
+$ g++ -std=c++14 -fopenmp dense_matrix_multiplication.cpp -o dense_matrix_multiplication.exe
+$./dense_matrix_multiplication.exe
+```
 
 ## Dense Matrix Multiplication
 OpenMP is applicable.
@@ -125,6 +135,43 @@ it takes 0.78732 seconds.
 Running openMP version:
 number of threads: 12
 it takes 1.93415 seconds.
+============================================
+validating results: true
+```
+
+## Repetitive Smoothing of a Vector
+How do we parallelize it?
+
+```C++
+const int max_num_of_threads = omp_get_max_threads();
+std::cout<< "number of threads: " << max_num_of_threads << std::endl;
+
+for (int i = 0; i < M; i++) {
+
+    int k = -2;
+    #pragma omp parallel for private(k) num_threads(max_num_of_threads)
+    for (int j = 2; j < N - 2; j++) {
+        s[j] = 0;
+        for (k = -2; k < 3; k++) {
+            s[j] += 0.2 * v[j + k];
+        }
+    }
+
+    #pragma omp parallel for num_threads(max_num_of_threads)
+    for (int j = 0; j < N; j++) {
+        v[j] = s[j];
+    }
+}
+```
+
+### Result
+```
+Running sequential version:
+it takes 0.123442 seconds.
+============================================
+Running openMP version:
+number of threads: 12
+it takes 0.0265839 seconds.
 ============================================
 validating results: true
 ```

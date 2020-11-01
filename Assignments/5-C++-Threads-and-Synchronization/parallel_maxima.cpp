@@ -61,8 +61,14 @@ int get_maxima_parallel(int* array, int size_of_array, int num_of_threads, bool 
             atomic_maxima = local_maxima;
         }*/
         int expected_atomic_value = atomic_maxima.load();
+        /*
+            Atomically compares the value representation of *this with that of expected, 
+            and if those are bitwise-equal, replaces the former with desired (performs read-modify-write operation). 
+            Otherwise, loads the actual value stored in *this into expected (performs load operation).
+        */
         while ( local_maxima > expected_atomic_value && !atomic_maxima.compare_exchange_weak(expected_atomic_value, local_maxima) );
-        // expected	- reference to the value expected to be found in the atomic object. Gets stored with the actual value of *this if the comparison fails.
+        // expected	- reference to the value expected to be found in the atomic object. 
+        //              Gets stored with the actual value of *this if the comparison fails.
         // desired - the value to store in the atomic object if it is as expected
         // return - true if the underlying atomic value was successfully changed, false otherwise.
     };

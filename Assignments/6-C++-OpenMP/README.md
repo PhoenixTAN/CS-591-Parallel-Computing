@@ -28,7 +28,7 @@ And then run it.
 For example, 
 ```
 $ g++ -std=c++14 -fopenmp dense_matrix_multiplication.cpp -o dense_matrix_multiplication.exe
-$./dense_matrix_multiplication.exe
+$ ./dense_matrix_multiplication.exe
 ```
 
 ## Dense Matrix Multiplication
@@ -71,7 +71,7 @@ validating results: true
 ```
 
 ## Pseudo-Polynomial Knapsack Using Dynamic Programming
-The inner loop can be parallelized, because index j dose not depend on the the previous index j.
+The inner loop can be parallelized, because index j dose not depend on the the previous indices(1, 2, ... , j - 1).
 
 Thus, we can add openMP directives in the inner loop.
 

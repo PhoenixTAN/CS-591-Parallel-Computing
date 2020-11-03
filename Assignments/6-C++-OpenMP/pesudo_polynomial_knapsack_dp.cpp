@@ -87,9 +87,10 @@ int main() {
     int* m_openMP = new int[(C+1)*(N+1)];
 
     // initialize matrix w and v
+    srand(time(NULL));  
     for ( int i = 0; i < N; i++ ) {
-        w[i] = i + 1;
-        v[i] = N - i;
+        w[i] = rand();
+        v[i] = rand();
     }
 
     // initialize matrix m and m_openMP

@@ -47,6 +47,7 @@ void openMP_matrix_multiplication(long int* A, long int* B, long int* C, int mat
     for ( i = 0; i < matrix_size; i++ ) {
         for ( j = 0; j < matrix_size; j++ ) {
             temp_sum = 0;
+            #pragma omp parallel for reduction(+:temp_sum)
             for ( k = 0; k < matrix_size; k++ ) {
                 temp_sum += A[matrix_size * i + k] * B[matrix_size * k + j];
             }

@@ -139,6 +139,44 @@ it takes 1.93415 seconds.
 validating results: true
 ```
 
+## Left Fold of a Binary Operation
+We can define a custom reduction operator.
+```C++
+/**
+ * @description: openMP version of pseudo polynomial knapsack
+ * @param {long int* v} a constant and non-negative array of length N
+ * @param {int N} the length of array v
+*/
+long long int openMP_left_fold_of_a_binary_opeartion(long long int* v, int N) {
+
+    long long int result = 1;
+
+    #pragma omp declare reduction \
+    (custom_op:long long int:omp_out=omp_out + omp_in + omp_out * omp_in) \
+    initializer(omp_priv = 0)
+
+    #pragma omp parallel for reduction(custom_op:result)
+    for ( int i = 0; i < N; i++ ) {
+        result = result + v[i] + result * v[i];
+    }
+    
+    return result;
+}
+```
+
+Since the overflow problem, we can only get a meaningful result based on the array with a size of `1 << 6` and with values of zeros or ones.
+```
+Running sequential version: 
+8589934591
+it takes 0.0010092 seconds.
+============================================
+Running openMP version:
+8589934591
+it takes 0.0009783 seconds.
+============================================
+validating results: true
+```
+
 ## Repetitive Smoothing of a Vector
 How do we parallelize it?
 

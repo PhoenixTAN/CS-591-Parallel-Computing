@@ -1,0 +1,5 @@
+1. Apply for an interactive session.
+2. Create a Desktop Session.
+3. List of modules to load.
+    cuda/10.1 and gcc/7.4.0
+4. Number of GPUS: 1

@@ -1,0 +1,31 @@
+#!/bin/bash -l
+
+# Set a time limit
+#$ -l h_rt=18:00:00
+
+# Request some cores
+#$ -pe omp 2
+# environment NSLOTS equals this number
+
+# Send myself an email at the end or if it fails
+#$ -m ea
+
+# Join stdout and stderr
+#$ -j y
+
+# Name the job
+#$ -N class_demo_cuda
+
+# Don't request more than 1
+#$ -l gpus=1
+
+
+# Load modules
+
+module load cuda/10.1
+module load gcc/7.4.0
+
+
+# Run the cuda program
+
+./hello_1

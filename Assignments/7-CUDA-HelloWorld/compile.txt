@@ -1,4 +1,4 @@
-nvcc cuda_helloworld.cu -02 -o cuda_helloworld
+nvcc cuda_helloworld.cu -o cuda_helloworld
 
 qsub -P cs591aa cuda_job.qsub
 

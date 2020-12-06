@@ -48,5 +48,8 @@
         "iterator": "cpp",
         "thread": "cpp",
         "xxatomic": "cpp"
-    }
+    },
+    "cSpell.words": [
+        "presymptomatic"
+    ]
 }
